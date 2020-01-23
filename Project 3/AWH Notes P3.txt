@@ -1,0 +1,17 @@
+SSD = Sum of Squared Difference (small value = good match)
+C_fg = Correlation (large value = good match)
+
+
+Perform normilization on each pixel on both f and g (template and test image candidate region).  f_bar = avg(f).  Normalize the template, but only normalize the candidate pixels g of the image I that the template is evaluating.
+
+--------------------
+|  |     |         |
+|  |  g  |         |     ---------
+|  |     |         |     |       |
+|  -------   I     |     |   f   |
+|                  |     |       |
+|                  |     ---------
+--------------------
+
+For template matching, 
+

@@ -1,0 +1,283 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>script</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-01-09"><meta name="DC.source" content="script.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Computer Vision Project 1</a></li><li><a href="#2">Part A</a></li><li><a href="#3">Part B</a></li></ul></div><h2 id="1">Computer Vision Project 1</h2><pre>Alec Hardy and Nikhil Patolia
+1/9/2020</pre><pre class="codeinput">clc;
+clearvars;
+</pre><h2 id="2">Part A</h2><pre class="codeinput"><span class="comment">% Read and Display the image</span>
+im1 = imread(<span class="string">'landscape.jpg'</span>);
+im2 = imread(<span class="string">'group.jpg'</span>);
+figure(1);
+imshow(im1);
+figure(2);
+imshow(im2);
+
+<span class="comment">% Convert the image to grayscale</span>
+im1_g = rgb2gray(im1);
+im2_g = rgb2gray(im2);
+
+max1 = max(max(im1_g));
+max1 = max1(1);
+[Xmax1, Ymax1] = find(im1_g==max1);
+max2 = max(max(im2_g));
+max2 = max2(1);
+[Xmax2, Ymax2] = find(im2_g==max2);
+
+min1 = min(min(im1_g));
+min1 = min1(1);
+[Xmin1, Ymin1] = find(im1_g==min1);
+min2 = min(min(im2_g));
+min2 = min2(1);
+[Xmin2, Ymin2] = find(im2_g==min2);
+
+fprintf(<span class="string">'Image 1: Max Pixel Val: %3d (%.3f); Location: (%d, %d)\n'</span>, max1, double(max1)/255, Xmax1(1), Ymax1(1));
+fprintf(<span class="string">'         Min Pixel Val: %3d (%.3f); Location: (%d, %d)\n\n'</span>, min1, double(min1)/255, Xmin1(1), Ymin1(1));
+
+fprintf(<span class="string">'Image 2: Max Pixel Val: %3d (%.3f); Location: (%d, %d)\n'</span>, max2, double(max2)/255, Xmax2(1), Ymax2(1));
+fprintf(<span class="string">'         Min Pixel Val: %3d (%.3f); Location: (%d, %d)\n\n'</span>, min2, double(min2)/255, Xmin2(1), Ymin2(1));
+
+
+<span class="comment">% Record filesize and comment on quality</span>
+fprintf(<span class="string">'Image 1 grayscale (UINT8) size: %d bytes\n'</span>, size(im1_g,1)*size(im1_g,2));
+fprintf(<span class="string">'Image 2 grayscale (UINT8) size: %d bytes\n'</span>, size(im2_g,1)*size(im2_g,2))
+
+<span class="comment">% Reduce the quality of each image a bunch of times</span>
+img1_c1 = halve_mat(im1_g);
+img1_c2 = halve_mat(img1_c1);
+img1_c3 = halve_mat(img1_c2);
+img1_c4 = halve_mat(img1_c3);
+img1_c5 = halve_mat(img1_c4);
+img1_c6 = halve_mat(img1_c5);
+figure();
+imshow(im1_g);
+xlabel(<span class="string">"Figure 3. Landscape original image.  No resolution change."</span>);
+figure();
+imshow(imresize(img1_c1, 2));
+xlabel(<span class="string">"Figure 4. Landscape image, resolution halved once."</span>);
+figure();
+imshow(imresize(img1_c2, 4));
+xlabel(<span class="string">"Figure 5. Landscape image, resolution halved twice."</span>);
+figure();
+imshow(imresize(img1_c3, 8));
+xlabel(<span class="string">"Figure 6. Landscape image, resolution halved thrice."</span>);
+figure();
+imshow(imresize(img1_c4, 16));
+xlabel(<span class="string">"Figure 7. Landscape image, resolution halved 4x"</span>);
+figure();
+imshow(imresize(img1_c5, 32));
+xlabel(<span class="string">"Figure 8. Landscape image, resolution halved 5x."</span>);
+figure();
+imshow(imresize(img1_c6, 64));
+xlabel(<span class="string">"Figure 9. Landscape image, resolution halved 6x."</span>);
+
+<span class="comment">% Next image</span>
+img2_c1 = halve_mat(im2_g);
+img2_c2 = halve_mat(img2_c1);
+img2_c3 = halve_mat(img2_c2);
+img2_c4 = halve_mat(img2_c3);
+img2_c5 = halve_mat(img2_c4);
+img2_c6 = halve_mat(img2_c5);
+figure();
+imshow(im2_g);
+xlabel(<span class="string">"Figure 10. Group original image.  No resolution change."</span>);
+figure();
+imshow(imresize(img2_c1, 2));
+xlabel(<span class="string">"Figure 11. Group image, resolution halved once."</span>);
+figure();
+imshow(imresize(img2_c2, 4));
+xlabel(<span class="string">"Figure 12. Group image, resolution halved twice."</span>);
+figure();
+imshow(imresize(img2_c3, 8));
+xlabel(<span class="string">"Figure 13. Group image, resolution halved thrice."</span>);
+figure();
+imshow(imresize(img2_c4, 16));
+xlabel(<span class="string">"Figure 14. Group image, resolution halved 4x."</span>);
+figure();
+imshow(imresize(img2_c5, 32));
+xlabel(<span class="string">"Figure 15. Group image, resolution halved 5x."</span>);
+figure();
+imshow(imresize(img2_c6, 64));
+xlabel(<span class="string">"Figure 16. Group image, resolution halved 6x."</span>);
+</pre><pre class="codeoutput">Image 1: Max Pixel Val: 252 (0.988); Location: (500, 125)
+         Min Pixel Val:   0 (0.000); Location: (711, 1)
+
+Image 2: Max Pixel Val: 255 (1.000); Location: (420, 7)
+         Min Pixel Val:   0 (0.000); Location: (697, 117)
+
+Image 1 grayscale (UINT8) size: 734580 bytes
+Image 2 grayscale (UINT8) size: 921600 bytes
+</pre><img vspace="5" hspace="5" src="script_01.png" style="width:941px;height:684px;" alt=""> <img vspace="5" hspace="5" src="script_02.png" style="width:1173px;height:666px;" alt=""> <img vspace="5" hspace="5" src="script_03.png" style="width:941px;height:684px;" alt=""> <img vspace="5" hspace="5" src="script_04.png" style="width:941px;height:684px;" alt=""> <img vspace="5" hspace="5" src="script_05.png" style="width:942px;height:686px;" alt=""> <img vspace="5" hspace="5" src="script_06.png" style="width:942px;height:686px;" alt=""> <img vspace="5" hspace="5" src="script_07.png" style="width:942px;height:692px;" alt=""> <img vspace="5" hspace="5" src="script_08.png" style="width:942px;height:705px;" alt=""> <img vspace="5" hspace="5" src="script_09.png" style="width:968px;height:705px;" alt=""> <img vspace="5" hspace="5" src="script_10.png" style="width:1173px;height:666px;" alt=""> <img vspace="5" hspace="5" src="script_11.png" style="width:1173px;height:666px;" alt=""> <img vspace="5" hspace="5" src="script_12.png" style="width:1173px;height:666px;" alt=""> <img vspace="5" hspace="5" src="script_13.png" style="width:1173px;height:666px;" alt=""> <img vspace="5" hspace="5" src="script_14.png" style="width:1173px;height:666px;" alt=""> <img vspace="5" hspace="5" src="script_15.png" style="width:1173px;height:679px;" alt=""> <img vspace="5" hspace="5" src="script_16.png" style="width:1173px;height:705px;" alt=""> <h2 id="3">Part B</h2><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Computer Vision Project 1
+%  Alec Hardy and Nikhil Patolia
+%  1/9/2020
+
+clc;
+clearvars;
+
+%% Part A
+
+% Read and Display the image
+im1 = imread('landscape.jpg');
+im2 = imread('group.jpg');
+figure(1);
+imshow(im1);
+figure(2);
+imshow(im2);
+
+% Convert the image to grayscale
+im1_g = rgb2gray(im1);
+im2_g = rgb2gray(im2);
+
+max1 = max(max(im1_g));
+max1 = max1(1);
+[Xmax1, Ymax1] = find(im1_g==max1);
+max2 = max(max(im2_g));
+max2 = max2(1);
+[Xmax2, Ymax2] = find(im2_g==max2);
+
+min1 = min(min(im1_g));
+min1 = min1(1);
+[Xmin1, Ymin1] = find(im1_g==min1);
+min2 = min(min(im2_g));
+min2 = min2(1);
+[Xmin2, Ymin2] = find(im2_g==min2);
+
+fprintf('Image 1: Max Pixel Val: %3d (%.3f); Location: (%d, %d)\n', max1, double(max1)/255, Xmax1(1), Ymax1(1));
+fprintf('         Min Pixel Val: %3d (%.3f); Location: (%d, %d)\n\n', min1, double(min1)/255, Xmin1(1), Ymin1(1));
+
+fprintf('Image 2: Max Pixel Val: %3d (%.3f); Location: (%d, %d)\n', max2, double(max2)/255, Xmax2(1), Ymax2(1));
+fprintf('         Min Pixel Val: %3d (%.3f); Location: (%d, %d)\n\n', min2, double(min2)/255, Xmin2(1), Ymin2(1));
+
+
+% Record filesize and comment on quality
+fprintf('Image 1 grayscale (UINT8) size: %d bytes\n', size(im1_g,1)*size(im1_g,2));
+fprintf('Image 2 grayscale (UINT8) size: %d bytes\n', size(im2_g,1)*size(im2_g,2))
+
+% Reduce the quality of each image a bunch of times
+img1_c1 = halve_mat(im1_g);
+img1_c2 = halve_mat(img1_c1);
+img1_c3 = halve_mat(img1_c2);
+img1_c4 = halve_mat(img1_c3);
+img1_c5 = halve_mat(img1_c4);
+img1_c6 = halve_mat(img1_c5);
+figure();
+imshow(im1_g);
+xlabel("Figure 3. Landscape original image.  No resolution change.");
+figure();
+imshow(imresize(img1_c1, 2));
+xlabel("Figure 4. Landscape image, resolution halved once.");
+figure();
+imshow(imresize(img1_c2, 4));
+xlabel("Figure 5. Landscape image, resolution halved twice.");
+figure();
+imshow(imresize(img1_c3, 8));
+xlabel("Figure 6. Landscape image, resolution halved thrice.");
+figure();
+imshow(imresize(img1_c4, 16));
+xlabel("Figure 7. Landscape image, resolution halved 4x");
+figure();
+imshow(imresize(img1_c5, 32));
+xlabel("Figure 8. Landscape image, resolution halved 5x.");
+figure();
+imshow(imresize(img1_c6, 64));
+xlabel("Figure 9. Landscape image, resolution halved 6x.");
+
+% Next image
+img2_c1 = halve_mat(im2_g);
+img2_c2 = halve_mat(img2_c1);
+img2_c3 = halve_mat(img2_c2);
+img2_c4 = halve_mat(img2_c3);
+img2_c5 = halve_mat(img2_c4);
+img2_c6 = halve_mat(img2_c5);
+figure();
+imshow(im2_g);
+xlabel("Figure 10. Group original image.  No resolution change.");
+figure();
+imshow(imresize(img2_c1, 2));
+xlabel("Figure 11. Group image, resolution halved once.");
+figure();
+imshow(imresize(img2_c2, 4));
+xlabel("Figure 12. Group image, resolution halved twice.");
+figure();
+imshow(imresize(img2_c3, 8));
+xlabel("Figure 13. Group image, resolution halved thrice.");
+figure();
+imshow(imresize(img2_c4, 16));
+xlabel("Figure 14. Group image, resolution halved 4x.");
+figure();
+imshow(imresize(img2_c5, 32));
+xlabel("Figure 15. Group image, resolution halved 5x.");
+figure();
+imshow(imresize(img2_c6, 64));
+xlabel("Figure 16. Group image, resolution halved 6x.");
+
+
+%% Part B
+##### SOURCE END #####
+--></body></html>
