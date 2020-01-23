@@ -12,10 +12,8 @@ function O = edge_detect(I, mode, options)
     elseif strcmp(mode, 'LoG')
         sigma_square = options(1);
         if (sigma_square >= 3); gs = 7; else; gs = 5; end
-        G = Gaussian_Filter(sigma_square,gs);
-        
-        
-        
+        F = fspecial('log', gs, sqrt(sigma_square));
+        n_conv = 1;
     end
     
     if n_conv==1

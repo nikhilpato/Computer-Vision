@@ -11,7 +11,8 @@ function O = edge_detect(I, mode, options)
         n_conv = 2;
     elseif strcmp(mode, 'LoG')
         sigma_square = options(1);
-        F = LoG_Filter(sigma_square,5);
+        if (sigma_square >= 3); gs = 7; else; gs = 5; end
+        F = fspecial('log', gs, sqrt(s
         
         
         
@@ -24,20 +25,4 @@ function O = edge_detect(I, mode, options)
         Gy = lin_img_conv(I, Fy);
         O = uint8(sqrt(Gx.^2 + Gy.^2));
     end
-end
-
-function F = LoG_Filter(sigma_square, sz)
-    % Extra Credit for creating our own LoG filter!
-    F = zeros(sz);
-    vals = (-floor(sz/2):
-    for F_row = 1:size(F,1)
-        for F_col = 1:size(F,2)
-            x = 
-        end
-    end
-end
-
-function G = Gaussian(x,y,sigma_square)
-    % Extra Credit for creating our own Gaussian generator!
-    G = (1/(2*pi*sigma_square)*exp(-(x*x+y*y)/(2*sigma_square)));
 end
