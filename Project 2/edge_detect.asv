@@ -11,8 +11,8 @@ function O = edge_detect(I, mode, options)
         n_conv = 2;
     elseif strcmp(mode, 'LoG')
         sigma_square = options(1);
-        F = Gaussian_Filter(sigma_square,5);
-        n_conv=1;
+        F = LoG_Filter(sigma_square,5);
+        
         
         
     end
@@ -26,20 +26,15 @@ function O = edge_detect(I, mode, options)
     end
 end
 
-function F = Gaussian_Filter(sigma_square, sz)
+function F = LoG_Filter(sigma_square, sz)
     % Extra Credit for creating our own LoG filter!
     F = zeros(sz);
-    vals = (-floor(sz/2):floor(sz/2));
+    vals = (-floor(sz/2):
     for F_row = 1:size(F,1)
         for F_col = 1:size(F,2)
-            x = vals(F_row);
-            y = vals(F_col);
-            F(F_row,F_col) = Gaussian(x, y, sigma_square);
+            x = 
         end
     end
-    % Normalize the matrix
-    F = F.*(1/sum(F, 'all'));
-    
 end
 
 function G = Gaussian(x,y,sigma_square)

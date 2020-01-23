@@ -27,10 +27,12 @@ function edgeDisplay(I1, I2, I3, I4, mode)
         imshow(E1);
         xlabel("Sum of squared gradient matrix.")
         subplot(4,4,(4*col)+3);
-        imshow(threshold(E1, 100));
-        xlabel("Thresholded edge detection, threshold value=100.")
+        t = max(E1(:))*.35;
+        imshow(threshold(E1, t));
+        xlabel("Threshold 35% of max ("+t+").")
         subplot(4,4,(4*col)+4);
-        imshow(threshold(E1, 30));
-        xlabel("Thresholded edge detection, threshold value=30.")
+        t = max(E1(:))*.15;
+        imshow(threshold(E1, t));
+        xlabel("Threshold 15% of max ("+t+").")
     end
 end
