@@ -72,8 +72,7 @@ function LoGDisplay(I1, I2, I3, I4)
 end
 
 function cannyDisplay(I1, I2, I3, I4)
-    mode = 'Canny';
-    figure('Name', mode);
+    figure('Name', 'Canny');
     set(gcf,'color','w');
     for col = (0:3)
         if col==0
@@ -85,20 +84,24 @@ function cannyDisplay(I1, I2, I3, I4)
         elseif col==3
             I=I4;
         end
-        s1 = canny_edge_detect(I, 1);
-        s2 = canny_edge_detect(I, 3);
-        s3 = canny_edge_detect(I, 5);
-        subplot(4,4,(4*col)+1);
+        E1 = canny_edge_detect(I,3, 0.1);
+        E2 = canny_edge_detect(I,3, 0.3);
+        E3 = canny_edge_detect(I,5, 0.1);
+        E4 = canny_edge_detect(I,5, 0.3);
+        subplot(5,5,(5*col)+1);
         imshow(I);
         xlabel("Original image.")
-        subplot(4,4,(4*col)+2);
-        imshow(s1);
-        xlabel("Sigma^2 = 1")
-        subplot(4,4,(4*col)+3);
-        imshow(s2);
-        xlabel("Sigma^2 = 3")
-        subplot(4,4,(4*col)+4);
-        imshow(s3);
-        xlabel("Sigma^2 = 5")
+        subplot(5,5,(5*col)+2);
+        imshow(E1);
+        xlabel("\sigma = 3. Threshold of 0.1")
+        subplot(5,5,(5*col)+3);
+        imshow(E2);
+        xlabel("\sigma = 3. Threshold of 0.3")
+        subplot(5,5,(5*col)+4);
+        imshow(E3);
+        xlabel("\sigma = 5. Threshold of 0.1")
+        subplot(5,5,(5*col)+5);
+        imshow(E4);
+        xlabel("\sigma = 5. Threshold of 0.3")
     end
 end
