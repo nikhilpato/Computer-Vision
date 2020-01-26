@@ -1,5 +1,4 @@
 function O = edge_detect(I, mode, options)
-%UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
     if strcmp(mode,'sobel')
         Fx = [-1 0 1;-2 0 2;-1 0 1];
