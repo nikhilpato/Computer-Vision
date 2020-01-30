@@ -1,0 +1,12 @@
+Part B
+1. Turn bacteria pixels white (double(1)), background black
+2. Find function to determine number fo connected components in image matrix (connected component analysis, conected component labeling)
+3. Count number of 1's in matrix to determine size of bacteria
+
+REMEMBER:
+
+Use .* for element multiplication
+
+use insertText and bwlabel, bwconncomp
+
+
