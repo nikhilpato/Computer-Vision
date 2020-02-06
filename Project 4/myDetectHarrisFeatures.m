@@ -6,7 +6,8 @@ function points = myDetectHarrisFeatures(I)
     % Use our custom gaussian filter stuff from previous labs
     % Look at the source code of detectHarrisFeatures() for help:
     % run command 'open vision.internal.detector.harrisMinEigen'
-    points = detectHarrisFeatures(I);
+    HF = detectHarrisFeatures(I);
+    points = HF.Location;
     
 end
 
