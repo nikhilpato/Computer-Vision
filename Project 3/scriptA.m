@@ -60,4 +60,3 @@ for i = 1:size(centroids_b,1)
     C = centroids_b(i,:);
     rectangle('Position',[C(1)-17,C(2)-10,35,32],'EdgeColor',[0 1 0])
 end
-
