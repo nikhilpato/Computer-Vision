@@ -13,28 +13,45 @@
 %      no rotation is involved).
 
 
-clear all;
+clear;
 close all;
 
 %% Let's get started
 I1 = rgb2gray(imread('bikes1.ppm'));
 I2 = rgb2gray(imread('bikes2.ppm'));
+I3 = rgb2gray(imread('cars1.ppm'));
+I4 = rgb2gray(imread('cars2.ppm'));
+I5 = rgb2gray(imread('wall1.ppm'));
+I6 = rgb2gray(imread('wall2.ppm'));
 
 % Feature points in [x,y] coordinates
 fp1 = selectStrongest(detectFASTFeatures(I1),100).Location;
 fp2 = selectStrongest(detectFASTFeatures(I2),100).Location;
+fp3 = selectStrongest(detectFASTFeatures(I3),100).Location;
+fp4 = selectStrongest(detectFASTFeatures(I4),100).Location;
+fp5 = selectStrongest(detectFASTFeatures(I5),100).Location;
+fp6 = selectStrongest(detectFASTFeatures(I6),100).Location;
 
 % Extracted feature vectors
 % ef(row_num) corresponds to the location in fp(row_num)
 ef_1a = my_extractFeatures_a(I1, fp1);
 ef_2a = my_extractFeatures_a(I2, fp2);
+ef_3a = my_extractFeatures_a(I3, fp3);
+ef_4a = my_extractFeatures_a(I4, fp4);
+ef_5a = my_extractFeatures_a(I5, fp5);
+ef_6a = my_extractFeatures_a(I6, fp6);
+
 % ex_1b = my_extractFeatures_b(I1, fp1);
 % ex_2b = my_extractFeatures_b(I2, fp2);
 
 % Returns [fp1,fp2] ordered by matching points
-[~,fp_match_2] = bestMatch(fp1, ef_1a, fp2, ef_2a, 0.5);
+[~,fp_match_2] = bestMatch(fp1, ef_1a, fp2, ef_2a, 1);
+[~,fp_match_4] = bestMatch(fp3, ef_3a, fp4, ef_4a, 1);
+[~,fp_match_6] = bestMatch(fp5, ef_5a, fp6, ef_6a, 1);
 
-showMatchFeatures(I1, I2, fp1, fp_match_2);
-
-
-
+figure();
+showMatchedFeatures(I1, I2, fp1, fp_match_2);
+figure();
+showMatchedFeatures(I3, I4, fp3, fp_match_4);
+figure();
+showMatchedFeatures(I5, I6, fp5, fp_match_6);
