@@ -14,10 +14,12 @@ T_black = rgb2gray(imread("BLackStone.JPG"));
 C_white = normxcorr2(T_white, I);
 C_black = normxcorr2(T_black, I);
 
+
 % Correct the image size
 size_diff_x = size(C_white,1)-size(I,1);
 size_diff_y = size(C_white,2)-size(I,2);
 C_white = C_white(floor(1+size_diff_x/2):floor(size(C_white,1)-size_diff_x/2),floor(1+size_diff_y/2):floor(size(C_white,2)-size_diff_y/2));
+
 
 size_diff_x = size(C_black,1)-size(I,1);
 size_diff_y = size(C_black,2)-size(I,2);
