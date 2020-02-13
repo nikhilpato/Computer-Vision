@@ -13,5 +13,12 @@
 %      no rotation is involved).
 
 
-clc;
+clear all;
 close all;
+
+%% Let's get started
+I = rgb2gray(imread('bikes1.ppm'));
+fp = myDetectHarrisFeatures(I);
+
+ex_a = my_extractFeatures_a(I, fp);
+ex_b = my_extractFeatures_b(I, fp);
