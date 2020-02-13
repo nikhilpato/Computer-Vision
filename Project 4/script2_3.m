@@ -17,8 +17,24 @@ clear all;
 close all;
 
 %% Let's get started
-I = rgb2gray(imread('bikes1.ppm'));
-fp = myDetectHarrisFeatures(I);
+I1 = rgb2gray(imread('bikes1.ppm'));
+I2 = rgb2gray(imread('bikes2.ppm'));
 
-ex_a = my_extractFeatures_a(I, fp);
-ex_b = my_extractFeatures_b(I, fp);
+% Feature points in [x,y] coordinates
+fp1 = selectStrongest(detectFASTFeatures(I1),100).Location;
+fp2 = selectStrongest(detectFASTFeatures(I2),100).Location;
+
+% Extracted feature vectors
+% ef(row_num) corresponds to the location in fp(row_num)
+ef_1a = my_extractFeatures_a(I1, fp1);
+ef_2a = my_extractFeatures_a(I2, fp2);
+% ex_1b = my_extractFeatures_b(I1, fp1);
+% ex_2b = my_extractFeatures_b(I2, fp2);
+
+% Returns [fp1,fp2] ordered by matching points
+[~,fp_match_2] = bestMatch(fp1, ef_1a, fp2, ef_2a, 0.5);
+
+showMatchFeatures(I1, I2, fp1, fp_match_2);
+
+
+

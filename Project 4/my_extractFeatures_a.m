@@ -8,7 +8,7 @@ function [extracted_features] = my_extractFeatures_a(image, detected_pts)
         x = floor(detected_pts(i,1));
         y = floor(detected_pts(i,2));
         try
-            window = image(x-2:x+2,y-2:y+2);
+            window = image(y-2:y+2,x-2:x+2);
         catch
             % Feature is on an edge or corner so I can't grab the entire
             % 5x5 window of neighbors.  Let's use zero padding in this
