@@ -1,4 +1,4 @@
-function [extracted_features] = my_extractFeatures_b(image, detected_points)
+function [extracted_features] = my_extractFeatures_b(image, detected_points, gaussian_filt)
 % Part B - Nikhil
  
 
@@ -11,7 +11,6 @@ for i = 1:size(detected_points, 1)
     y_loc = detected_points(i,1) + 8;
 
     temp = padded(x_loc - 7 : x_loc + 8, y_loc - 7: y_loc + 8);
-    gaussian_filt = fspecial('gaussian', 16, 3);
     grid16x16 = imfilter(temp,gaussian_filt);
     [Gmag, Gdir] = imgradient(grid16x16,'sobel');
     new_dir = wrapTo360(Gdir);
@@ -45,13 +44,12 @@ for i = 1:size(detected_points, 1)
                 else
                     pos = 8;
                 end
-
-                extracted_features(i, default_pos + pos) = extracted_features(i, default_pos + pos) + mags_in_cells{row + (col * 4)}(each_pixel_dir);
-
+                extracted_features(i, default_pos + pos) = ...
+                    extracted_features(i, default_pos + pos) + ...
+                    mags_in_cells{row + (col * 4)}(each_pixel_dir);
             end
         end
-    end
-    
+    end 
 end
 
 

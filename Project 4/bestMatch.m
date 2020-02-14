@@ -19,11 +19,13 @@ function [fp_o1,fp_o2] = bestMatch(fp1, ef_1, fp2, ef_2, null_ratio)
         ratio = smallest_1/smallest_2;
         % If we fail the ratio test, return NULL for this fp
         if ratio > null_ratio
+            fp_o1(i,:) = [NaN,NaN];
             fp_o2(i,:) = [NaN,NaN];
             continue;
         end
         
         fp_o2(i,:) = fp2(smallest_index,:);
+        fp_o1(i,:) = fp1(i,:);
         
     end
 
