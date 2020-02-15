@@ -1,6 +1,4 @@
 function [extracted_features] = my_extractFeatures_b(image, detected_points, gaussian_filt)
-% Part B - Nikhil
- 
 
 padded = padarray(image,[8 8],0,'both');
 %need to do gaussian on the 16x16 grid
