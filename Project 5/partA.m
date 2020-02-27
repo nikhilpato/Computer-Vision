@@ -28,6 +28,25 @@ if exist('ROI','var')==0 || exist('I','var')==0
         % Perform ROI selection
         imshow(I{i});
         ROI{i} = roipoly();
-    end
-    
+    end 
 end
+% Now we have all of our images and ROIs
+
+%% Plot our historgams for the foreground and background pixels
+
+% RGB
+planeHist(I, ROI, "RGB", "Red", "Green", "Blue");
+
+% Normalized RGB
+I_nRGB = {20};
+for i=1:size(I,2)
+   I_nRGB{i} =  normalizeRGB(I{i});
+end
+planeHist(I_nRGB, ROI, "Normalized RGB", "R", "G", "B");
+
+% HSV
+I_HSV = {20};
+for i=1:size(I,2)
+   I_HSV{i} =  rgb2hsv(I{i});
+end
+planeHist(I_HSV, ROI, "HSV", "Hue", "Saturation", "Value");
