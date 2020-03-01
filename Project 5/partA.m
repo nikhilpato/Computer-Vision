@@ -1,6 +1,7 @@
 clc
 close all
 
+% Parameters to help resize images to nearly the same size
 SMALLEST_IMG_SIZE = [259 194];
 SIZE_THRESHOLD = 1.5;
 
