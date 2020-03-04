@@ -5,28 +5,23 @@ close all
 % Vary the means and covariance matrices of the distributions as well as 
 % the number of points in each cluster.
 NUM_CLUSTERS = 5;
-NUM_PTS   = [100, 10, 300, 91, 1000];
-MU_PTS    = [0, -5, 66, 7, -22];
-SIGMA_PTS = [1, 2, 7, 12, 300]; 
+NUM_PTS   = [100, 10, 30, 91, 50];
+MU_PTS    = {[0 0],[1 -1],[15 -4],[.1 -6],[6 -7]};
+SIGMA_PTS = {[1 0;0 1],[1 .75;.75 2],[2 -.1;-.1 .1],[.1 -.3;-.3 2],[5 .65;.65 1]}; 
 
 %% Generate 2D clusters with different number of pts, means, and covariances
-clusters = {NUM_CLUSTERS};
+clusters = [];
 for i=1:5
-    clusters{i} = [mvnrnd(MU_PTS(i), SIGMA_PTS(i), NUM_PTS(i)) ...
-                   mvnrnd(MU_PTS(i), SIGMA_PTS(i), NUM_PTS(i))];
+    clusters = [clusters; mvnrnd(MU_PTS{i}, SIGMA_PTS{i}, NUM_PTS(i))];                
 end
 
 %% Run K-Means on the synthetic data generated in Step1. 
 % Does it always yield the optimal configuration? Discuss the results.
-K_SIZES = [2 3 5];
-for c=1:NUM_CLUSTERS
+K_SIZES = [2 3 4 5];
+
+for i=1:size(K_SIZES,2)
    figure();
-   for i=1:size(K_SIZES,2)
-       subplot(3,1,i);
-       [IDX,C] = kmeans(clusters{c},K_SIZES(i));
-       scatter(clusters{c}(:,1),clusters{c}(:,2),[],IDX,'filled');
-       ylabel(K_SIZES(i) + " clusters");
-   end
-   sgtitle(sprintf("%d Data Points\n  (\\mu=%d.  \\sigma = %d)", ...
-       NUM_PTS(c), MU_PTS(c), SIGMA_PTS(c)));
+   [IDX,C] = kmeans(clusters,K_SIZES(i));
+   scatter(clusters(:,1),clusters(:,2),[],IDX,'filled');
+   title(K_SIZES(i)+" K-clusters");
 end
