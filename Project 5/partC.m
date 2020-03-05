@@ -25,3 +25,12 @@ for i=1:size(K_SIZES,2)
    scatter(clusters(:,1),clusters(:,2),[],IDX,'filled');
    title(K_SIZES(i)+" K-clusters");
 end
+
+
+for i=1:size(K_SIZES,2)
+    gmm = fitgmdist(clusters,K_SIZES(i));
+    em_idx = cluster(gmm, clusters);
+    figure()
+    gscatter(clusters(:,1), clusters(:,2), em_idx)
+    title(K_SIZES(i)+" EM-clusters");
+end
