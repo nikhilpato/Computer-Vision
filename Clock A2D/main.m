@@ -13,25 +13,42 @@ for i = 1:size(I_files,1)
     
     % Load image into image cell array (I)
     I{i} = imread("input/"+I_files(i).name);
-
-    % Create binary image and segment so we can identify each resistor
     I_cur_gray = rgb2gray(I{i});
+    
     
     % Create edge map
     E_map_sobel = edge_detect(I_cur_gray, 'sobel');
-    
-    % Identify circle which represents a clock
-    % [ctr, r] = imfindcircles(I_cur_gray, [10 1000]);
     
     % Create canny edge detected map on the image after a strong gaussian
     % blur to remove fake lines
     SIGMA_SQUARE = 50;
     SIZE = 51;
-    BW_THRESHOLD = 50;
+    BW_THRESHOLD = 120;
+    CANNY_THRESHOLD = .5;
     G_filt = Gaussian_Filter(SIGMA_SQUARE, SIZE);
     I_gaus = lin_img_conv(I_cur_gray, G_filt);
     I_gaus_bw = I_gaus > BW_THRESHOLD;
-    E_map_canny = remove_zero_padding(edge(I_gaus_bw, 'canny'),1+floor(SIZE/2));
+    E_map_canny_strongBlur = remove_zero_padding(edge(I_gaus_bw, 'canny', ...
+        CANNY_THRESHOLD),1+floor(SIZE/2));
+    
+    % Create canny edge detected map on the image after a weak gaussian
+    % blur to find the clock face circle
+    SIGMA_SQUARE = 2;
+    SIZE = 5;
+    BW_THRESHOLD = 100;
+    CANNY_THRESHOLD = .5;
+    G_filt = Gaussian_Filter(SIGMA_SQUARE, SIZE);
+    I_gaus = lin_img_conv(I_cur_gray, G_filt);
+    I_gaus_bw = I_gaus > BW_THRESHOLD;
+    E_map_canny_weakBlur = remove_zero_padding(edge(I_gaus_bw, 'canny', ...
+        CANNY_THRESHOLD),1+floor(SIZE/2));
+    
+    E_map_canny = E_map_canny_strongBlur;
+    
+    % Identify circle which represents a clock
+    %[ctr, r] = imfindcircles(I{i}, [100 1200]);
+    %imshow(E_map_canny);
+    %viscircles(ctr,r);
     
     
     % Maybe: If ellipse, use affine transformation to transfrom into circle
@@ -44,7 +61,7 @@ for i = 1:size(I_files,1)
     
     [H,H_theta,H_Rho] = hough(E_map_canny);
     
-    HOUGH_THRESHOLD = ceil(0.05*max(H(:)));  % Default: 0.3*...
+    HOUGH_THRESHOLD = ceil(0.3*max(H(:)));  % Default: 0.3*...
     
     
     H_Peaks  = houghpeaks(H, NUM_HOUGH_PEAKS, 'threshold', HOUGH_THRESHOLD);
@@ -62,7 +79,33 @@ for i = 1:size(I_files,1)
         lines_mtx(k,:) = [norm(lines(k).point1 - lines(k).point2) theta];
     end
     
-    lines_mtx = sort(lines_mtx,'descend');
+    % Sort lines_mtx by the first column in descending order
+    % From https://www.mathworks.com/matlabcentral/answers/278956-sort-
+    % matrix-based-on-unique-values-in-one-column
+    [~,idx] = sort(lines_mtx(:,1), 'descend'); % sort just the first column
+    lines_mtx = lines_mtx(idx,:);   % sort the whole matrix using the sort indices
+    
+    % If we detect both sides of the hour/minute hand
+    SAME_HAND_ANGLE_THRESHOLD = 5;
+    numChanges = 0;
+    if size(lines_mtx,1) > 2
+       h=1;
+       while h < size(lines_mtx,1)
+           if numChanges >= 2
+                break;
+           end
+           angleDiff = abs(lines_mtx(h,2) - lines_mtx(h+1,2));
+           if (angleDiff < SAME_HAND_ANGLE_THRESHOLD)
+               % Take the average of the angles
+               lines_mtx(h,2) = 0.5*(lines_mtx(h,2) + lines_mtx(h+1,2));
+               % Delete the next row, we don't need it
+               lines_mtx(h+1,:) = [];
+               
+               numChanges = numChanges + 1;
+           end
+           h = h+1;
+       end
+    end
     
     figure, imshow(E_map_canny), hold on
     for k = 1:length(lines)
@@ -78,8 +121,13 @@ for i = 1:size(I_files,1)
     % Minute hand
     minute = floor(lines_mtx(1,2)/6);
     hour = floor(lines_mtx(2,2)/30);
+    if hour == 0
+        hour = 12;
+    end
     
     % Profit?
-    fprintf("%d:%0.2d",hour,minute);
+    time = sprintf("%d:%0.2d",hour,minute);
+    disp time;
+    xlabel(time);
 end 
 
