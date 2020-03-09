@@ -9,6 +9,8 @@ I_files = dir(fullfile(cwd+"/input",'*.jpg'));
 I = {size(I_files,1)};
 
 % For each image in "input" directory...
+% Change this to "parfor" to run them all in parallel (if you have the
+% toolbox installed)
 for i = 1:size(I_files,1)
     
     % Load image into image cell array (I)
@@ -107,15 +109,17 @@ for i = 1:size(I_files,1)
        end
     end
     
-    figure, imshow(E_map_canny), hold on
-    for k = 1:length(lines)
-       xy = [lines(k).point1; lines(k).point2];
-       plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
-
-       % Plot beginnings and ends of lines
-       plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
-       plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');
-    end
+    figure();
+    imshow(I{i});
+    hold on;
+%     for k = 1:length(lines)
+%        xy = [lines(k).point1; lines(k).point2];
+%        plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
+% 
+%        % Plot beginnings and ends of lines
+%        plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
+%        plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');
+%     end
     
     % Determine angles
     % Minute hand
