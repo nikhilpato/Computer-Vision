@@ -58,17 +58,17 @@ for i = 1:size(I_files,1)
     % "12" or "6" detection with template matching to align clock facing up
     
     % Line detection w/ hough transform
-    NUM_HOUGH_PEAKS = 4;
-    LINE_MIN_LEN = 150;
+    NUM_HOUGH_PEAKS = 5;
+    LINE_MIN_LEN = 100;
     
     [H,H_theta,H_Rho] = hough(E_map_canny);
     
-    HOUGH_THRESHOLD = ceil(0.3*max(H(:)));  % Default: 0.3*...
+    HOUGH_THRESHOLD = ceil(0.01*max(H(:)));  % Default: 0.3*...
     
     
     H_Peaks  = houghpeaks(H, NUM_HOUGH_PEAKS, 'threshold', HOUGH_THRESHOLD);
     lines = houghlines(E_map_canny,H_theta,H_Rho,H_Peaks,...
-        'FillGap',10,...
+        'FillGap',50,...
         'MinLength',LINE_MIN_LEN);
     
     % Sort lines by length
@@ -112,14 +112,14 @@ for i = 1:size(I_files,1)
     figure();
     imshow(I{i});
     hold on;
-%     for k = 1:length(lines)
-%        xy = [lines(k).point1; lines(k).point2];
-%        plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
-% 
-%        % Plot beginnings and ends of lines
-%        plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
-%        plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');
-%     end
+    for k = 1:length(lines)
+       xy = [lines(k).point1; lines(k).point2];
+       plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
+
+       % Plot beginnings and ends of lines
+       plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
+       plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');
+    end
     
     % Determine angles
     % Minute hand
