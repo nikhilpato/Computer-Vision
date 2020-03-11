@@ -54,6 +54,7 @@ for i = 1:size(I_files,1)
     
     
     % Maybe: If ellipse, use affine transformation to transfrom into circle
+    center = [size(E_map_canny,1)/2 size(E_map_canny,2)/2];
     
     % "12" or "6" detection with template matching to align clock facing up
     
@@ -72,13 +73,15 @@ for i = 1:size(I_files,1)
         'MinLength',LINE_MIN_LEN);
     
     % Sort lines by length
+    % lines_mtx = [len,theta,[x1,x2]]
     lines_mtx = [];
     for k=1:length(lines)
         theta = lines(k).theta;
         if theta < 0
             theta = theta + 360;
         end
-        lines_mtx(k,:) = [norm(lines(k).point1 - lines(k).point2) theta];
+        lines_mtx(k,:) = [norm(lines(k).point1 - lines(k).point2) theta ...
+            lines(k).point1(1) lines(k).point2(1)];
     end
     
     % Sort lines_mtx by the first column in descending order
@@ -110,7 +113,7 @@ for i = 1:size(I_files,1)
     end
     
     figure();
-    imshow(I{i});
+    imshow(E_map_canny);
     hold on;
     for k = 1:length(lines)
        xy = [lines(k).point1; lines(k).point2];
@@ -122,9 +125,26 @@ for i = 1:size(I_files,1)
     end
     
     % Determine angles
+    %% TODO: LOOK HERE!
     % Minute hand
     minute = floor(lines_mtx(1,2)/6);
+    if (mean(lines_mtx(1,3:4)) > (center(1)) && minute > 30)
+        minute = minute - 30;
+    end
+    if (mean(lines_mtx(1,3:4)) < (center(1)) && minute < 30)
+        minute = minute + 30;
+    end   
+    
+    
+    %Hour hand
     hour = floor(lines_mtx(2,2)/30);
+    if (mean(lines_mtx(2,3:4)) > (center(1)) && hour > 6)
+        hour = hour - 6;
+    end
+    if (mean(lines_mtx(2,3:4)) < (center(1)) && hour < 6)
+        hour = hour + 6;
+    end
+    
     if hour == 0
         hour = 12;
     end
