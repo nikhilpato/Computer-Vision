@@ -15,7 +15,28 @@ for i = 1:size(I_files,1)
     
     % Load image into image cell array (I)
     I{i} = imread("input/"+I_files(i).name);
-    I_cur_gray = rgb2gray(I{i});
+    temp = rgb2gray(I{i});
+    
+    [x, y] = size(temp);
+    rad_min = x * 0.06;
+    rad_max = x * 0.35;
+    
+    [ctr,r] = imfindcircles(temp,[int8(rad_min) int8(rad_max)],'ObjectPolarity','dark','Sensitivity',0.92);
+    gaus_needed = true;
+    
+    if(~isempty(ctr))
+        xLeft = ctr(1) - r(1) - 5;
+        yBot = ctr(2) - r(1) - 5;
+        lw = 2 * r(1) + 10;
+        cropped = imcrop(temp,[xLeft yBot lw lw]);
+        I_cur_gray = imresize(cropped, [300 300]);
+        I_gaus = I_cur_gray;
+        gaus_needed = false;
+    else
+        I_cur_gray = temp;
+    end
+    
+    
     
     
     % Create edge map
@@ -28,7 +49,11 @@ for i = 1:size(I_files,1)
     BW_THRESHOLD = 120;
     CANNY_THRESHOLD = .5;
     G_filt = Gaussian_Filter(SIGMA_SQUARE, SIZE);
-    I_gaus = lin_img_conv(I_cur_gray, G_filt);
+    if(gaus_needed)
+        I_gaus = lin_img_conv(I_cur_gray, G_filt);
+    end
+    
+    
     I_gaus_bw = I_gaus > BW_THRESHOLD;
     E_map_canny_strongBlur = remove_zero_padding(edge(I_gaus_bw, 'canny', ...
         CANNY_THRESHOLD),1+floor(SIZE/2));
